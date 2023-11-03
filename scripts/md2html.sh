@@ -1,4 +1,5 @@
 #!/bin/sh
+# Written by CHATGPT
 
 # Check for the correct number of arguments
 if [ "$#" -ne 2 ]; then
