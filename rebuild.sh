@@ -12,6 +12,16 @@ headerVar="./snippets/header.html"
 footerVar="./snippets/footer.html"
 endVar="./snippets/end.html"
 
+# Front Page Manager
+frontFunc() {
+sed -i '/-/d' ./pages/home.md
+for l in $(ls pages | cut -d "." -f1 | grep -v embed | grep -v home | grep -v about);
+do
+    d=$(grep "Date" ./pages/$l.md | cut -d " " -f 3)
+    echo "   - [$d $l]($l.html)" >> ./pages/home.md
+done
+}
+
 # The Loop de Loop
 loopFunc() {
 for i in $cutVar;
@@ -20,17 +30,11 @@ do
     pages="./pages/$i.md"
     static="./static/$i.html"
     staticEmbed="./static/embed/$i.html"
-    cat $startVar $headerVar $staticEmbed $footerVar $endVar > $static
     $convertVar $pages $staticEmbed
-
+    cat $startVar $headerVar $staticEmbed $footerVar $endVar > $static
 done
 }
-loopFunc
-loopFunc
 
-# Front Page
-sed -i '/-/d' ./pages/home.md
-for l in $(ls pages | cut -d "." -f1 | grep -v embed | grep -v home | grep -v about);
-do
-    echo "   - [$l]($l.html)" >> ./pages/home.md
-done
+# Run the Functions
+frontFunc
+loopFunc

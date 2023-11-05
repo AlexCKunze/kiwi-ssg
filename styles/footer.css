@@ -1,0 +1,20 @@
+
+footer {
+    margin-top: 4vh;
+    color: white;
+    /*background-color: #32302f;*/
+    background-color: #458588;
+    height: 5vh;
+    padding: 1vh;
+    width: 100%;
+    text-align: center;
+}
+footer ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 3px;
+    background-color: #458588;
+    font-size: 2.5vh;
+}

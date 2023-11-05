@@ -1,0 +1,7 @@
+.post * {
+    margin-right: 30%;
+    margin-left: 30%;
+}
+.post ul li {
+    text-align: left;
+}

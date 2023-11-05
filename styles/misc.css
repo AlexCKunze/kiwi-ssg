@@ -1,0 +1,11 @@
+
+embed {
+    height: 100%;
+}
+.contents img {
+    height: 26%;
+    width: 26%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
