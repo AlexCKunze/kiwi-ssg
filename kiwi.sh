@@ -20,9 +20,9 @@ rebuildFunc() {
         do
             d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
 #             echo "   - [$d $l]($l.html)" >> ./pages/home.md
-            echo "   - [$d $l]($l.html)" >> ./dates.txt
+            echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
-        cat ./dates.txt >> ./pages/home.md
+        cat ./static/dates.txt >> ./pages/home.md
     }
 
     # Transforms markdown files into actual HTML pages with all the core elements needed for the website
