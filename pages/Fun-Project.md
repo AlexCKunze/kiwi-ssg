@@ -17,8 +17,10 @@ This is extremely simple to use. If you want to change things like e.g., the nav
 - footer.html
 - end.html
 
-To run the script
-chmod u+x kiwi.sh
+**To run the script**
+
+*chmod u+x kiwi.sh*
+
 ./kiwi.sh
 
 -  --rebuild Rebuilds the site

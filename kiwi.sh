@@ -2,8 +2,8 @@
 
 rebuildFunc() {
     #Initial Cleanup
-    find ./static/embed/ -name "*.html" -type f delete 2> /dev/null
-    find ./static/ -name "*.html" -type f delete 2> /dev/null
+    find ./static/embed/ -name "*.html" -type f -delete
+    find ./static/ -name "*.html" -type f -delete
     echo "" > ./static/dates.txt
 
     # Location Shortcuts
