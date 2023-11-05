@@ -11,6 +11,7 @@ footer {
 }
 footer ul li a {
     color: white;
+    list-style-type: none;
     text-decoration: none;
     font-weight: bold;
     border-radius: 10px;
