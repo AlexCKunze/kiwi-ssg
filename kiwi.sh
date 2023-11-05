@@ -4,7 +4,7 @@ rebuildFunc() {
     #Initial Cleanup
     find ./static/embed/ -name "*.html" -type f delete 2> /dev/null
     find ./static/ -name "*.html" -type f delete 2> /dev/null
-    echo "" > ./dates.txt
+    echo "" > ./static/dates.txt
 
     # Location Shortcuts
     convertVar="./scripts/md2html.sh"
