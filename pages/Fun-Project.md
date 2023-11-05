@@ -17,12 +17,14 @@ This is extremely simple to use. If you want to change things like e.g., the nav
 - footer.html
 - end.html
 
-To add new posts, all you have to do is run the manage.sh script
+To run the script
+chmod u+x kiwi.sh
+./kiwi.sh
 
-./manage.sh
+-  --rebuild Rebuilds the site
+-  --new *postname* Creates a new post as ./pages/*yourpostname*.md
 
-- new <postname>
-- edit <postname>
-- delete <postname>
+**NOTE** This is a work in progress!
+
 
 </div>
