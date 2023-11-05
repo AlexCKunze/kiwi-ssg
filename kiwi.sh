@@ -19,7 +19,6 @@ rebuildFunc() {
         for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages');
         do
             d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
-#             echo "   - [$d $l]($l.html)" >> ./pages/home.md
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
         cat ./static/dates.txt >> ./pages/home.md

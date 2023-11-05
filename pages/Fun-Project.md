@@ -6,7 +6,7 @@
 
 This is a cool project I am currently working on:
 
-- [link](https://github.com/AlexCKunze/bash-site-gen)
+- [kiwi-ssg](https://github.com/AlexCKunze/kiwi-ssg)
 
 This is extremely simple to use. If you want to change things like e.g., the navbar and footer, just go to the snippets folders.
 
