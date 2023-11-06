@@ -1,1 +1,8 @@
-styles.css
+@import url(core.css);
+@import url(header.css);
+@import url(nav.css);
+@import url(contents.css);
+@import url(post.css);
+@import url(code.css);
+@import url(misc.css);
+@import url(footer.css);

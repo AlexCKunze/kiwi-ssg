@@ -1,0 +1,15 @@
+.code {
+    margin: 20px;
+    color: white;
+    background-color: #252222;
+    padding: 20px;
+    border: thick;
+    border-color: aliceblue;
+    outline-style: solid;
+}
+.code ul li {
+    text-align: left;
+}
+.code p {
+    font-size: 20px;
+}

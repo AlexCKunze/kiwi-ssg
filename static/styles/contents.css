@@ -1,1 +1,50 @@
-contents.css
+.contents {
+    margin: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contents a {
+    color: white;
+    text-decoration: none;
+}
+.contents h1, .contents h2 .contents h3 {
+    margin-bottom: 1vh;
+}
+.contents p, .contents ul li a {
+    font-size: 2.9vh;
+}
+
+/* Headers */
+
+.contents h1, .contents h2, .contents h3 {
+    text-align: center;
+}
+.contents h1 {
+    font-size: 4.9vh;
+}
+.contents h2 {
+    font-size: 3.9vh;
+}
+.contents h3 {
+    font-size: 2.9vh;
+}
+
+/* Headers */
+
+/* UL */
+
+.contents ul li a, .contents ul li {
+    color: aliceblue;
+    text-align: center;
+    list-style-type: none;
+}
+.contents ul {
+    margin-bottom: 1vh;
+}
+.contents ul li {
+    font-size: 2.5vh;
+}
+
+/* UL */

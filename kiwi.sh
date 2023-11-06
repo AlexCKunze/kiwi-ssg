@@ -48,7 +48,7 @@ then
 
 elif [ "$1" = "--new" ]
 then
-    touch ./pages/$2.md
+    touch ./pages/"$2".md
 
 else
     echo -e """
