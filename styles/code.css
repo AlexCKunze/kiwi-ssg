@@ -1,11 +1,16 @@
 .code {
-    margin: 20px;
-    color: white;
     background-color: #252222;
+    margin: 20px;
     padding: 20px;
+    outline-style: solid;
+    color: white;
     border: thick;
     border-color: aliceblue;
-    outline-style: solid;
+    width: 40%;
+    overflow: scroll;
+    height: 70vh;
+    margin-right: auto;
+    margin-left: auto;
 }
 .code ul li {
     text-align: left;

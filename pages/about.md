@@ -1,7 +1,9 @@
 # About Me
 ## Contacts
+
 <img style="width:16vh;height:16vh;" src="images/bio.png">
 <br>
+
 - <i class="fa fa-phone-square" aria-hidden="true"></i> (608) 720-4536
 <br>
 - <i class="fa fa-envelope-o" aria-hidden="true"></i>alexckunze@protonmail.com

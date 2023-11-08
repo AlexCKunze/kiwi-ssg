@@ -15,32 +15,27 @@
         </header> <!-- ending-header -->
         <main>
             <div class="contents">
-<h1 id="what-is-going-on-here">What is going on here?</h1>
-<h2 id="date-11042023">Date 11/04/2023</h2>
-<div class="post">
-<p>This is a cool project I am currently working on:</p>
-<ul>
-<li><a href="https://github.com/AlexCKunze/kiwi-ssg">kiwi-ssg</a></li>
-</ul>
-<p>This is extremely simple to use. If you want to change things like
-e.g., the navbar and footer, just go to the snippets folders.</p>
-<p><strong>snippets/</strong></p>
-<ul>
-<li>start.html</li>
-<li>header.html</li>
-<li>footer.html</li>
-<li>end.html</li>
-</ul>
-<p><strong>To run the script</strong></p>
-<p><em>chmod u+x kiwi.sh</em></p>
-<p>./kiwi.sh</p>
-<ul>
-<li>–rebuild Rebuilds the site</li>
-<li>–new <em>postname</em> Creates a new post as
-./pages/<em>yourpostname</em>.md</li>
-</ul>
-<p><strong>NOTE</strong> This is a work in progress!</p>
+<h1 id="test-code">Test Code</h1>
+<h2 id="date-11072023">Date 11/07/2023</h2>
+<p><post></p>
+<p>Test</p>
+</post> <post>
+<div class="code">
+{code-block}
+<pre>
+<code>
+
+#!/usr/bin/env bash
+
+i=$(curl -v https://nixos.org/manual/nixos/stable/index.html#sec-upgrading 2>&1 | grep "nix-channel --add" | grep -v unstable | grep -v small | grep -v channel-name  | grep \# | cut -d "/" -f4 | cut -d "-" -f2 | cut -d " " -f1)
+sudo nix-channel --add https://channels.nixos.org/nixos-$i nixos
+sudo nix-channel --list
+read -p "Hit enter to update to the current release, or hit CTRL+C to cancel"
+sudo nixos-rebuild switch --upgrade
+</code>
+</pre>
 </div>
+<p></post></p>
             </div>
         </main>
         <footer id="footer"> <!-- beginning-footer-->

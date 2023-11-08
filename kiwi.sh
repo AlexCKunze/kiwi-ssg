@@ -7,7 +7,7 @@ rebuildFunc() {
     echo "" > ./static/dates.txt
 
     # Location Shortcuts
-    convertVar="./scripts/md2html.sh"
+    convertVar="pandoc"
     startVar="./snippets/start.html"
     headerVar="./snippets/header.html"
     footerVar="./snippets/footer.html"
@@ -16,8 +16,7 @@ rebuildFunc() {
     # Creates the posts page, and populates it with new posts along with their dates
     frontFunc() {
         sed -i '/-/d' ./pages/home.md
-        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages');
-        do
+        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages'); do
             d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
@@ -26,28 +25,35 @@ rebuildFunc() {
 
     # Transforms markdown files into actual HTML pages with all the core elements needed for the website
     redoFunc() {
-        for i in $(find pages | cut -d "/" -f2 | cut -d "." -f1  | grep -v -e 'html' -e 'pages');
-        do
+        for i in $(find pages | cut -d "/" -f2 | cut -d "." -f1  | grep -v -e 'html' -e 'pages'); do
             #Inside Vars
             pages="./pages/$i.md"
             static="./static/$i.html"
             staticEmbed="./static/embed/$i.html"
-            "$convertVar" "$pages" "$staticEmbed"
+            "$convertVar" -f markdown "$pages" -o "$staticEmbed"
             cat "$startVar" "$headerVar" "$staticEmbed" "$footerVar" "$endVar" > "$static"
+        done
+    }
+
+    linkFunc() {
+        for i in $(ls ./static/styles); do
+            unlink ./static/styles/$i
+        done
+        for i in $(ls ./styles); do
+            ln ./styles/$i ./static/styles/$i
         done
     }
 
     # Runs the Functions
     frontFunc
     redoFunc
+    linkFunc
 }
 
-if [ "$1" = "--rebuild" ];
-then
+if [ "$1" = "--rebuild" ]; then
     rebuildFunc
 
-elif [ "$1" = "--new" ]
-then
+elif [ "$1" = "--new" ]; then
     touch ./pages/"$2".md
 
 else

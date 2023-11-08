@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 80rem;
+  /*  width: 80rem;*/
 }
 .post ul li, .post ul li {
     list-style-type: square;
@@ -15,7 +15,7 @@
     list-style-position: inside;
 }
 
-@media (min-width: 640px) or (orientation: portrait) {
+/* @media (min-width: 640px) or (orientation: portrait) {
     .post {
         width: 40rem;
     }
@@ -27,4 +27,4 @@
     .post {
         width: 80rem;
     }
-}
+}*/
