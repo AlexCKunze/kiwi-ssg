@@ -10,11 +10,11 @@
     height: 70vh;
     margin-right: auto;
     margin-left: auto;
-    width: 40%;
+    width: 90vw;
 }
 .code ul li {
     text-align: left;
 }
-.code p {
+.code {
     font-size: 20px;
 }
