@@ -6,4 +6,5 @@ header {
     height: 5vh;
     padding: 1vh;
     border:transparent;
+    max-width: 100%;
 }
