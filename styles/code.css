@@ -7,10 +7,11 @@
     border: thick;
     border-color: aliceblue;
     overflow: scroll;
-    height: 70vh;
+    max-height: 70vh;
+    min-height: 30vh;
     margin-right: auto;
     margin-left: auto;
-    width: 90vw;
+    width: 75vw;
 }
 .code ul li {
     text-align: left;

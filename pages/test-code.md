@@ -6,9 +6,9 @@
 Test
 
 </post>
+
 <post>
 <div class="code">
-{code-block}
 <pre>
 <code>
 

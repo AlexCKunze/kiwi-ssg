@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 rebuildFunc() {
+
     #Initial Cleanup
     find ./static/embed/ -name "*.html" -type f -delete
     find ./static/ -name "*.html" -type f -delete
@@ -48,17 +49,28 @@ rebuildFunc() {
     frontFunc
     redoFunc
     linkFunc
+
 }
 
-if [ "$1" = "--rebuild" ]; then
-    rebuildFunc
+case $1 in
 
-elif [ "$1" = "--new" ]; then
-    touch ./pages/"$2".md
+    --rebuild)
+        rebuildFunc;;
 
-else
-    echo -e """
-    --rebuild \t\tRebuilds the site
-    --new <post-name> \tCreates a new post as ./pages/<post-name>.md
-    """
-fi
+    --new)
+        touch ./pages/"$2".md;;
+
+    "--edit")
+        if [ ! -f "./pages/$2.md" ]; then
+            echo "File Doesn't Exist"
+        else
+            $EDITOR ./pages/$2.md
+        fi;;
+
+        *)
+            echo -e """
+            --rebuild \t\tRebuilds the site
+            --new <post-name> \tCreates a new post as ./pages/<post-name>.md
+            """;;
+
+esac
