@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-rebuildFunc() {
+if [ -f ".kiwirc" ]; then
+    source .kiwirc
+fi
 
+initFunc() {
+    git clone https://github.com/kinzoku-dev/kiwi-ssg-template .
+}
+
+rebuildFunc() {
     #Initial Cleanup
     find ./static/embed/ -name "*.html" -type f -delete
     find ./static/ -name "*.html" -type f -delete
@@ -16,12 +23,12 @@ rebuildFunc() {
 
     # Creates the posts page, and populates it with new posts along with their dates
     frontFunc() {
-        sed -i '/-/d' ./pages/home.md
-        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages'); do
+        sed -i '/-/d' ./pages/$POSTS.md
+        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e $HOME -e 'about' -e 'pages' -e $POSTS); do
             d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
-        cat ./static/dates.txt >> ./pages/home.md
+        cat ./static/dates.txt >> ./pages/$POSTS.md
     }
 
     # Transforms markdown files into actual HTML pages with all the core elements needed for the website
@@ -49,28 +56,33 @@ rebuildFunc() {
     frontFunc
     redoFunc
     linkFunc
-
 }
 
-case $1 in
+if [ "$1" = "--rebuild" ]; then
+    rebuildFunc
 
-    --rebuild)
-        rebuildFunc;;
+elif [ "$1" = "--new" ]; then
+    $EDITOR ./pages/"$2".md
 
-    --new)
-        touch ./pages/"$2".md;;
+elif [ "$1" = "--edit" ]; then
+    if [ "$2" = null ]; then
+        echo "Invalid post"
+    fi
+    if [ ! -f "./pages/$2.md" ]; then
+        echo "page doesn't exist"
+    else
+        $EDITOR ./pages/"$2".md
+    fi
 
-    "--edit")
-        if [ ! -f "./pages/$2.md" ]; then
-            echo "File Doesn't Exist"
-        else
-            $EDITOR ./pages/$2.md
-        fi;;
+elif [ "$1" = "--init" ]; then
+    initFunc
 
-        *)
-            echo -e """
-            --rebuild \t\tRebuilds the site
-            --new <post-name> \tCreates a new post as ./pages/<post-name>.md
-            """;;
+else
+    echo -e """
+    --init \tCreates a new project in the current directory
+    --rebuild \t\tRebuilds the site
+    --new <post-name> \tCreates a new post as ./pages/<post-name>.md
+    --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
+    """
+fi
 
-esac
