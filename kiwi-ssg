@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-if [ -f ".kiwirc" ]; then
-    source .kiwirc
-fi
+if [ -f .kiwirc ]; then
+    source .kiwirc; else
+    POSTS="blog"; fi
 
 initFunc() {
-    git clone https://github.com/kinzoku-dev/kiwi-ssg-template .
-}
+    if [ ! -f ./tmp ]; then
+        mkdir ./tmp; fi
+        git clone "https://github.com/kinzoku-dev/kiwi-ssg-template" "./tmp"
+        mv ./tmp/* .
+    }
 
 rebuildFunc() {
     #Initial Cleanup
@@ -24,7 +27,7 @@ rebuildFunc() {
     # Creates the posts page, and populates it with new posts along with their dates
     frontFunc() {
         sed -i '/-/d' ./pages/$POSTS.md
-        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e $HOME -e 'about' -e 'pages' -e $POSTS); do
+        for l in $(ls ./pages | cut -d "." -f1 | grep -v  -e "about" -e "post" -e "home"); do
             d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
@@ -45,12 +48,10 @@ rebuildFunc() {
 
     linkFunc() {
         for i in $(ls ./static/styles); do
-            unlink ./static/styles/$i
-        done
-        for i in $(ls ./styles); do
-            ln ./styles/$i ./static/styles/$i
-        done
-    }
+            unlink ./static/styles/$i; done
+            for i in $(ls ./styles); do
+                ln ./styles/$i ./static/styles/$i; done
+            }
 
     # Runs the Functions
     frontFunc
@@ -58,39 +59,32 @@ rebuildFunc() {
     linkFunc
 }
 
-if [ "$1" = "--rebuild" ]; then
-    rebuildFunc
+case $1 in
 
-elif [ "$1" = "--new" ]; then
-    $EDITOR ./pages/"$2".md
+    --rebuild)
+        rebuildFunc;;
 
-elif [ "$1" = "--edit" ]; then
-    if [ "$2" = null ]; then
-        echo "Invalid post"
-    fi
-    if [ ! -f "./pages/$2.md" ]; then
-        echo "page doesn't exist"
-    else
-        $EDITOR ./pages/"$2".md
-    fi
+    --new)
+        $EDITOR ./pages/"$2".md;;
 
-elif [ "$1" = "--init" ]; then
-    initFunc
+    --edit)
+        if [ -z "$2" ]; then
+            echo "Invalid post"
+        elif [ ! -f "./pages/$2.md" ]; then
+            echo "page doesn't exist"
+        else
+            $EDITOR ./pages/"$2".md
+            fi;;
 
-elif [ "$1" = "--rsync" ]; then
-    if [ -z "$2" ] || [ -z "$3" ]; then
-        echo "Specify server and directory"
-    else
-        rsync -uvrP --delete-after ./static/* $2:$3
-    fi
+        --init)
+            initFunc;;
 
-else
-    echo -e """
-    --init \tCreates a new project in the current directory
-    --rebuild \t\tRebuilds the site
-    --new <post-name> \tCreates a new post as ./pages/<post-name>.md
-    --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
-    --rsync <server> <directory> \tSyncs static folder to a directory on a server with SSH
-    """
-fi
+        *)
+            echo -e """
+            --init \tCreates a new project in the current directory
+            --rebuild \t\tRebuilds the site
+            --new <post-name> \tCreates a new post as ./pages/<post-name>.md
+            --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
+            """;;
 
+        esac
