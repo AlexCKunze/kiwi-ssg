@@ -105,7 +105,7 @@ rsyncFunc() {
 
         Example:
          - rUSER=toot
-         - rADDRES=testsite.lan
+         - rADDRESS=testsite.lan
          - rPATH=/var/www/testsite
         """
     else
