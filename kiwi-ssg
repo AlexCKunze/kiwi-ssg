@@ -1,23 +1,36 @@
 #!/usr/bin/env bash
 
-if [ -f .kiwirc ]; then
-    source .kiwirc; else
-    POSTS="blog"; fi
+# Makes sure everything is in order
+checkFunc() {
+    if [ -f ".kiwirc" ]; then
+        source .kiwirc
+    else
+        echo 'POSTS=home' >> '.kiwirc'
+    fi
+}
 
+# If you want to use a premade template
 initFunc() {
     if [ ! -f ./tmp ]; then
         mkdir ./tmp; fi
-        git clone "https://github.com/kinzoku-dev/kiwi-ssg-template" "./tmp"
-        mv ./tmp/* .
-    }
+    git clone https://github.com/alexckunze/kiwi-ssg-templates ./tmp/
+    mv ./tmp/* .
+}
 
 rebuildFunc() {
+
+    # Checks if certain locations exist that would be Critical for this to run properly.
+    if [ ! -d "./static/embed" ] ; then
+        mkdir ./static/embed; fi
+    if [ ! -d "./static/styles" ]; then
+        mkdir ./static/styles; fi
+
     #Initial Cleanup
-    find ./static/embed/ -name "*.html" -type f -delete
-    find ./static/ -name "*.html" -type f -delete
+    find ./static/embed/ -name "*.html" -type f -delete 2> /dev/null
+    find ./static/ -name "*.html" -type f -delete 2> /dev/null
     echo "" > ./static/dates.txt
 
-    # Location Shortcuts
+    # Shorcuts
     convertVar="pandoc"
     startVar="./snippets/start.html"
     headerVar="./snippets/header.html"
@@ -27,8 +40,8 @@ rebuildFunc() {
     # Creates the posts page, and populates it with new posts along with their dates
     frontFunc() {
         sed -i '/-/d' ./pages/$POSTS.md
-        for l in $(ls ./pages | cut -d "." -f1 | grep -v  -e "about" -e "post" -e "home"); do
-            d=$(grep "Date" ./pages/"$l".md | cut -d " " -f 3)
+        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages' -e $POSTS); do
+            d=$(grep "Date" ./pages/$l.md | cut -d " " -f 3)
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
         cat ./static/dates.txt >> ./pages/$POSTS.md
@@ -48,10 +61,12 @@ rebuildFunc() {
 
     linkFunc() {
         for i in $(ls ./static/styles); do
-            unlink ./static/styles/$i; done
-            for i in $(ls ./styles); do
-                ln ./styles/$i ./static/styles/$i; done
-            }
+            unlink ./static/styles/$i
+        done
+        for i in $(ls ./styles); do
+            ln ./styles/$i ./static/styles/$i
+        done
+    }
 
     # Runs the Functions
     frontFunc
@@ -59,32 +74,75 @@ rebuildFunc() {
     linkFunc
 }
 
+newFunc() {
+    if [ ! -f ./pages/$1.md ]; then
+        currentDate=$(date "+%m-%d-%Y")
+        echo -e "# $1\n\n## Date $currentDate\n\n<div class=\"post\">\n\n\n\n</div>" >> ./pages/$1.md
+        $EDITOR ./pages/$1.md
+    elif [ -z "$1" ]; then
+        echo "Please, my good sir, give the post a name?"
+    else
+        echo "Page already Exists"; fi
+}
+
+editFunc() {
+    if [ -z "$1" ]; then
+        echo "Please, my good sir, what post are you trying to edit?"
+    elif [ ! -f "./pages/$1.md" ]; then
+        echo "My good sir, I would like to inform you that the post you are trying to edit doesn't exist."
+    else
+        $EDITOR ./pages/$1.md
+    fi
+}
+
+rsyncFunc() {
+    if [ -z "$rUSER" ] || [ -z "$rADDRESS" ] || [ -z $rPATH ]; then
+        echo -e """
+        Make sure that these values are set in your .kiwirc
+
+        rUSER = your username
+        rADDRESS = your IP or domain address
+        rPATH = the location you want to send your files
+
+        Example: '--rsync toot www.theduckpond.xyz /var/www/theduckpond'
+        rUSER=toot
+        rADDRES=theduckpond.xyz
+        rPATH=/var/www/theduckpond
+        """
+    else
+        rsync -uvrP --delete-after ./static/* "$rUSER"@"$rADDRESS":"$rPATH"; fi
+}
+
+helpFunc() {
+    echo -e """
+    --init \tCreates a new project in the current directory
+    --rebuild \t\tRebuilds the site
+    --new <post-name> \tCreates a new post as ./pages/<post-name>.md
+    --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
+    """
+}
+
+checkFunc
+
+# The user interface
+
 case $1 in
 
     --rebuild)
         rebuildFunc;;
 
     --new)
-        $EDITOR ./pages/"$2".md;;
+        newFunc $2;;
 
     --edit)
-        if [ -z "$2" ]; then
-            echo "Invalid post"
-        elif [ ! -f "./pages/$2.md" ]; then
-            echo "page doesn't exist"
-        else
-            $EDITOR ./pages/"$2".md
-            fi;;
+        editFunc $2;;
 
-        --init)
-            initFunc;;
+    --init)
+        initFunc;;
+    --rsync)
+        rsyncFunc;;
+    *)
+        helpFunc;;
 
-        *)
-            echo -e """
-            --init \tCreates a new project in the current directory
-            --rebuild \t\tRebuilds the site
-            --new <post-name> \tCreates a new post as ./pages/<post-name>.md
-            --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
-            """;;
+esac
 
-        esac
