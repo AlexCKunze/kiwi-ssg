@@ -98,16 +98,15 @@ editFunc() {
 rsyncFunc() {
     if [ -z "$rUSER" ] || [ -z "$rADDRESS" ] || [ -z $rPATH ]; then
         echo -e """
-        Make sure that these values are set in your .kiwirc
+        Make sure that these values are set in your .kiwirc :
+        - rUSER = your username
+        - rADDRESS = your IP or domain address
+        - rPATH = the location you want to send your files
 
-        rUSER = your username
-        rADDRESS = your IP or domain address
-        rPATH = the location you want to send your files
-
-        Example: '--rsync toot www.theduckpond.xyz /var/www/theduckpond'
-        rUSER=toot
-        rADDRES=theduckpond.xyz
-        rPATH=/var/www/theduckpond
+        Example:
+         - rUSER=toot
+         - rADDRES=testsite.lan
+         - rPATH=/var/www/testsite
         """
     else
         rsync -uvrP --delete-after ./static/* "$rUSER"@"$rADDRESS":"$rPATH"; fi
