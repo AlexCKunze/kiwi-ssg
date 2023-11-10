@@ -77,12 +77,20 @@ elif [ "$1" = "--edit" ]; then
 elif [ "$1" = "--init" ]; then
     initFunc
 
+elif [ "$1" = "--rsync" ]; then
+    if [ -z "$2" ] || [ -z "$3" ]; then
+        echo "Specify server and directory"
+    else
+        rsync -uvrP --delete-after ./static/* $2:$3
+    fi
+
 else
     echo -e """
     --init \tCreates a new project in the current directory
     --rebuild \t\tRebuilds the site
     --new <post-name> \tCreates a new post as ./pages/<post-name>.md
     --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
+    --rsync <server> <directory> \tSyncs static folder to a directory on a server with SSH
     """
 fi
 
