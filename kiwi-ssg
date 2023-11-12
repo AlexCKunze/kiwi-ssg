@@ -60,6 +60,7 @@ rebuildFunc() {
         cat ./static/dates.txt >> ./pages/$POSTS.md
     }
 
+
     # Transforms markdown files into actual HTML pages with all the core elements needed for the website
     redoFunc() {
         for i in $(find pages | cut -d "/" -f2 | cut -d "." -f1  | grep -v -e 'html' -e 'pages'); do
@@ -134,6 +135,19 @@ helpFunc() {
     """
 }
 
+tagFunc() {
+    for f in $(ls "./pages/"); do
+       if [ "$(grep Tags ./pages/$f)" ]; then
+           tags=$(echo -e "$f" "$(grep Tags ./pages/$f)" | cut -d " " -f4 | tr -d '"' | tr -s "," "\n")
+           test=$(echo -e "$tags")
+           for i in $test; do
+               echo "[$f]($( echo $f | tr -d ".md").html)" >> ./static/$i-tags.md
+           done
+       fi
+    done
+}
+
+
 # The user interface
 
 case $1 in
@@ -151,8 +165,9 @@ case $1 in
         initFunc;;
     --rsync)
         rsyncFunc;;
+    --tag)
+        tagFunc;;
     *)
         helpFunc;;
 
 esac
-
