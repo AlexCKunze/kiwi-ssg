@@ -53,7 +53,7 @@ rebuildFunc() {
     # Creates the posts page, and populates it with new posts along with their dates
     frontFunc() {
         sed -i '/-/d' ./pages/$POSTS.md
-        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages' -e $POSTS); do
+        for l in $(find pages | cut -d "/" -f2 | cut -d "." -f1 | grep -v -e 'embed' -e 'home' -e 'about' -e 'pages' -e $POSTS -e 'index'); do
             d=$(grep "Date" ./pages/$l.md | cut -d " " -f 3)
             echo "   - [$d $l]($l.html)" >> ./static/dates.txt
         done
@@ -149,7 +149,7 @@ tagFunc() {
     done
     for f in $(ls "./static/tags/"); do
         fContents=$(cat ./static/tags/$f)
-        fFile=$(echo \### $f | cut -d "." -f1)
+        fFile=$(echo \### $f | cut -d "-" -f1)
         echo -e "$fFile\n\n$fContents\n\n" >> ./pages/index.md
     done
 }
