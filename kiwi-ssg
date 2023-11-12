@@ -11,10 +11,26 @@ checkFunc() {
 
 # If you want to use a premade template
 initFunc() {
-    if [ ! -f ./tmp ]; then
-        mkdir ./tmp; fi
-    git clone https://github.com/alexckunze/kiwi-ssg-templates ./tmp/
-    mv ./tmp/* .
+    gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Kiwi-SSG"
+    echo "This script will initialize a new project with kiwi-ssg"
+    gum confirm "Proceed?" || exit
+    git clone https://github.com/kinzoku-dev/kiwi-ssg-template.git .
+    echo "#!/usr/bin/env bash" >> .kiwirc
+    echo "Which editor would you like to use?"
+    RC_EDITOR="$(gum input)"
+    echo "EDITOR=$RC_EDITOR" >> .kiwirc
+    echo "Which page should be your home page?"
+    RC_HOME="$(gum input)"
+    echo "HOME=$RC_HOME" >> .kiwirc
+    echo "Which page should your posts be on?"
+    RC_POSTS="$(gum input)"
+    echo "POSTS=$RC_POSTS" >> .kiwirc
+    mkdir pages
+    echo "# Home" >> ./pages/$RC_HOME.md
+    echo "# Posts" >> ./pages/$RC_POSTS.md
+
+    sed -i "s/home.html/$RC_HOME.html/g" ./snippets/header.html
+    sed -i "s/blog.html/$RC_POSTS.html/g" ./snippets/header.html
 }
 
 rebuildFunc() {

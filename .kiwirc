@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+EDITOR=nvim
+HOME=home
+POSTS=posts
