@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 
-# Makes sure everything is in order
-checkFunc() {
-    if [ -f ".kiwirc" ]; then
-        source .kiwirc
-    else
-        echo 'POSTS=home' >> '.kiwirc'
-    fi
-}
+source .kiwirc
 
 # If you want to use a premade template
 initFunc() {
     gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Kiwi-SSG"
     echo "This script will initialize a new project with kiwi-ssg"
     gum confirm "Proceed?" || exit
-    git clone https://github.com/kinzoku-dev/kiwi-ssg-template.git .
+    if [ ! -f ./tmp ]; then
+        mkdir ./tmp; fi
+    git clone https://github.com/kinzoku-dev/kiwi-ssg-template.git ./tmp/
+    mv ./tmp/* .
+    rm ./tmp -rf
     echo "#!/usr/bin/env bash" >> .kiwirc
     echo "Which editor would you like to use?"
     RC_EDITOR="$(gum input)"
@@ -91,12 +88,12 @@ rebuildFunc() {
 }
 
 newFunc() {
-    if [ ! -f ./pages/$1.md ]; then
+    if [ -z "$1" ]; then
+        echo "Please, my good sir, give the post a name?"
+    elif [ ! -f ./pages/$1.md ]; then
         currentDate=$(date "+%m-%d-%Y")
         echo -e "# $1\n\n## Date $currentDate\n\n<div class=\"post\">\n\n\n\n</div>" >> ./pages/$1.md
         $EDITOR ./pages/$1.md
-    elif [ -z "$1" ]; then
-        echo "Please, my good sir, give the post a name?"
     else
         echo "Page already Exists"; fi
 }
@@ -136,8 +133,6 @@ helpFunc() {
     --edit <post-name> \tEdits an existing post in ./pages/<post-name>.md
     """
 }
-
-checkFunc
 
 # The user interface
 
