@@ -136,14 +136,21 @@ helpFunc() {
 }
 
 tagFunc() {
+    rm ./static/tags/*
+    rm ./pages/index.md
     for f in $(ls "./pages/"); do
        if [ "$(grep Tags ./pages/$f)" ]; then
            tags=$(echo -e "$f" "$(grep Tags ./pages/$f)" | cut -d " " -f4 | tr -d '"' | tr -s "," "\n")
            test=$(echo -e "$tags")
            for i in $test; do
-               echo "[$f]($( echo $f | tr -d ".md").html)" >> ./static/$i-tags.md
+               echo " - [$f]($( echo $f | tr -d ".md").html)" >> ./static/tags/$i-tags.md
            done
        fi
+    done
+    for f in $(ls "./static/tags/"); do
+        fContents=$(cat ./static/tags/$f)
+        fFile=$(echo \### $f | cut -d "." -f1)
+        echo -e "$fFile\n\n$fContents\n\n" >> ./pages/index.md
     done
 }
 
